@@ -2,7 +2,8 @@ import React from 'react';
 import Header from './components/Header';
 import Banner from './components/Banner';
 import ContentSection from './components/ContentSection';
-import HintItem from './hint/HintItem'; // Assurez-vous que le chemin est correct
+import Footer from './components/Footer';
+import HintItem from './hint/HintItem';
 
 const Page = () => {
   return (
@@ -18,7 +19,6 @@ const Page = () => {
 
       {/* Section des Hints */}
       <div style={{ marginTop: '2rem', padding: '1rem' }}>
-        <h1>Hints</h1>
         <HintItem
           position={4}
           title=" "
@@ -30,6 +30,7 @@ const Page = () => {
           content="Click on the body to access additional options."
         />
       </div>
+      <Footer />
     </div>
   );
 };

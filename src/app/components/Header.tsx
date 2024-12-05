@@ -11,8 +11,8 @@ const Header = () => {
         <span>A FOUNDATION TO PRESERVE WATER</span>
       </div>
       <div className={styles.nav}>
-        <button className={styles.supportButton}>NOUS SOUTENIR</button>
-        <button className={styles.menuButton}>MENU</button>
+        <button className={styles.supportButton}>Menu</button>
+        <button className={styles.menuButton}>Made by "Vive le café"</button>
       </div>
     </header>
   );

@@ -6,7 +6,7 @@ const Banner = () => {
     <div className={styles.banner}>
       <div className={styles.overlay}></div>
       <div className={styles.content}>
-        <h2>UNE ODYSSÉE POUR L'OCÉAN ET CONTRE LE CHANGEMENT CLIMATIQUE</h2>
+        <h3>SI LA NAVIGATION ÉTAIT UN PAYS, ELLE SERAIT LE 6EME PLUS GRAND ÉMETTEUR DE CO2. HEUREUSEMENT, NOUS POUVONS UTILISER LE VENT ET LE SOLEIL POUR NOUS AMENER VERS LE FUTUR : OSONS LE CHANGEMENT, POUR L’OCÉAN.  </h3>
       </div>
     </div>
   );

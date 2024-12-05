@@ -3,7 +3,7 @@
   cursor: pointer;
   display: flex;
   justify-content: flex-start;
-  padding-right: 170px;
+  padding-right: 0px;
 }
 .item-hints .hint {
   margin: 150px auto;
