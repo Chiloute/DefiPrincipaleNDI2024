@@ -1,0 +1,22 @@
+.content {
+  padding: 2rem;
+  text-align: center;
+  color: #00142b;
+  background-color: #f9f9f9;
+}
+
+.content p {
+  max-width: 800px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.imageContainer {
+  margin-top: 2rem;
+}
+
+.imageContainer img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+}

@@ -1,0 +1,32 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #00142b;
+  color: white;
+  padding: 1rem 2rem;
+}
+
+.logo {
+  text-transform: uppercase;
+  font-size: 1rem;
+}
+
+.nav button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1rem;
+  margin-left: 1rem;
+  cursor: pointer;
+}
+
+.supportButton {
+  border: 1px solid white;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+}
+
+.menuButton {
+  font-size: 1.2rem;
+}
