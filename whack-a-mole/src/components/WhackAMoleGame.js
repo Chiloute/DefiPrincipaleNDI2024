@@ -3,63 +3,55 @@ import { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 
 const WhackAMoleGame = () => {
-  const [score, setScore] = useState(0);
   const [totalTime, setTotalTime] = useState(0);
   const [totalClicks, setTotalClicks] = useState(0);
   const [mouseMovements, setMouseMovements] = useState([]);
   const [isGameFinished, setIsGameFinished] = useState(false);
   const [startTime, setStartTime] = useState(null);
-  const gameRef = useRef(null); // Ref to store Phaser game instance
-  const gameInitializedRef = useRef(false); // Track if the game is initialized
+  const gameRef = useRef(null);
+  const gameInitializedRef = useRef(false);
 
   useEffect(() => {
-    if (gameInitializedRef.current) {
-      return; // If the game is already initialized, do not re-initialize
+    if (gameInitializedRef.current || gameRef.current) {
+      return;
     }
 
     const initPhaser = async () => {
       const Phaser = (await import('phaser')).default;
-      console.log("Initializing Phaser game..."); // Debugging line
-
-      gameInitializedRef.current = true; // Mark the game as initialized
+      
+      gameInitializedRef.current = true;
 
       class GameScene extends Phaser.Scene {
         constructor() {
           super({ key: 'GameScene' });
+          // Keep score in memory but don't display it
           this.score = 0;
           this.moles = [];
-          this.mouseMovements = [];  // Store mouse movements
-          this.mouseLastPos = { x: 0, y: 0 }; // Last mouse position
-          this.mouseStartTime = Date.now();  // Time tracking mouse movement speed
-          this.startTime = Date.now(); // Local start time for Phaser
+          this.mouseMovements = [];
+          this.mouseLastPos = { x: 0, y: 0 };
+          this.mouseStartTime = Date.now();
+          this.startTime = Date.now();
         }
 
         preload() {
           this.load.image('hole-back', '/hole-back.png');
           this.load.image('hole-front', '/hole-front.png');
           this.load.image('mole', '/mole.png');
+          this.load.image('friendly-mole', '/mole-headband.png');
+          this.load.image('mallet', '/mallet.png');
         }
 
         create() {
-          // Capture mouse movements
           this.input.on('pointermove', this.trackMouseMovement, this);
 
-          // Initialize game start time
           if (!startTime) {
-            setStartTime(Date.now());  // Set the start time in React state
+            setStartTime(Date.now());
           }
 
-          // Initialize mole positions
           const positions = [
-            { x: 100, y: 100 },
-            { x: 200, y: 100 },
-            { x: 300, y: 100 },
-            { x: 100, y: 200 },
-            { x: 200, y: 200 },
-            { x: 300, y: 200 },
-            { x: 100, y: 300 },
-            { x: 200, y: 300 },
-            { x: 300, y: 300 },
+            { x: 100, y: 100 }, { x: 200, y: 100 }, { x: 300, y: 100 },
+            { x: 100, y: 200 }, { x: 200, y: 200 }, { x: 300, y: 200 },
+            { x: 100, y: 300 }, { x: 200, y: 300 }, { x: 300, y: 300 },
           ];
 
           positions.forEach(pos => {
@@ -67,7 +59,14 @@ const WhackAMoleGame = () => {
               .setScale(0.5)
               .setDepth(0);
 
+            // Create both types of moles
             const mole = this.add.image(pos.x, pos.y, 'mole')
+              .setScale(0.5)
+              .setDepth(1)
+              .setInteractive()
+              .setVisible(false);
+
+            const friendlyMole = this.add.image(pos.x, pos.y, 'friendly-mole')
               .setScale(0.5)
               .setDepth(1)
               .setInteractive()
@@ -77,23 +76,70 @@ const WhackAMoleGame = () => {
               .setScale(0.5)
               .setDepth(2);
 
-            mole.baseY = pos.y - 30;
-            mole.hideY = pos.y + 30;
-            mole.showY = pos.y;
-            mole.y = mole.hideY;
+            // Set up positions for both moles
+            [mole, friendlyMole].forEach(m => {
+              m.baseY = pos.y - 30;
+              m.hideY = pos.y + 30;
+              m.showY = pos.y;
+              m.y = m.hideY;
+            });
+
+            mole.isFriendly = false;
+            friendlyMole.isFriendly = true;
 
             mole.on('pointerdown', () => this.hitMole(mole));
+            friendlyMole.on('pointerdown', () => this.hitMole(friendlyMole));
 
-            this.moles.push(mole);
+            this.moles.push(mole, friendlyMole);
           });
 
-          // Logic for spawning moles
           this.time.addEvent({
             delay: 1000,
             callback: this.spawnMole,
             callbackScope: this,
-            loop: true,
+            loop: true
           });
+          
+            // Hide the default cursor
+            this.input.setDefaultCursor('none');
+          
+            // Create the mallet cursor
+            this.mallet = this.add.image(0, 0, 'mallet')
+              .setOrigin(1, 1) // Keep bottom-right as rotation origin
+              .setDepth(1000)
+              .setScale(0.5);
+          
+            // Get mallet dimensions for offset calculation
+            const malletWidth = this.mallet.displayWidth;
+            const malletHeight = this.mallet.displayHeight;
+          
+            // Update mallet position on pointer move with offset
+            this.input.on('pointermove', (pointer) => {
+              // Add offset to position the cursor at center-left of the mallet
+              this.mallet.x = pointer.x + malletWidth;
+              this.mallet.y = pointer.y + malletHeight/4;
+            });
+          
+            // Add click animation
+            this.input.on('pointerdown', () => {
+              this.tweens.add({
+                targets: this.mallet,
+                angle: -45,
+                duration: 100,
+                ease: 'Back.easeOut',
+                yoyo: true
+              });
+            });
+          
+            // Reset mallet rotation on pointer up
+            this.input.on('pointerup', () => {
+              this.tweens.add({
+                targets: this.mallet,
+                angle: 0,
+                duration: 100,
+                ease: 'Back.easeOut'
+              });
+            });
         }
 
         trackMouseMovement(pointer) {
@@ -101,16 +147,16 @@ const WhackAMoleGame = () => {
           const timeSinceLastMove = currentTime - (this.mouseStartTime || currentTime);
           if (timeSinceLastMove > 200) {
             this.mouseStartTime = currentTime;
-
-            const movementSpeed = Phaser.Math.Distance.Between(pointer.x, pointer.y, this.mouseLastPos.x, this.mouseLastPos.y);
-
+            const movementSpeed = Phaser.Math.Distance.Between(
+              pointer.x, pointer.y, 
+              this.mouseLastPos.x, this.mouseLastPos.y
+            );
             setMouseMovements(prev => [...prev, {
               x: pointer.x,
               y: pointer.y,
               time: currentTime,
               speed: movementSpeed,
             }]);
-
             this.mouseLastPos = { x: pointer.x, y: pointer.y };
           }
         }
@@ -118,21 +164,28 @@ const WhackAMoleGame = () => {
         spawnMole() {
           const availableMoles = this.moles.filter(mole => !mole.visible);
           if (availableMoles.length > 0) {
-            const mole = Phaser.Utils.Array.GetRandom(availableMoles);
-
-            mole.setVisible(true);
-            mole.y = mole.hideY;
-            this.tweens.add({
-              targets: mole,
-              y: mole.showY,
-              duration: 200,
-              ease: 'Back.easeOut',
-              onComplete: () => {
-                this.time.delayedCall(800, () => {
-                  this.hideMole(mole);
-                });
-              }
-            });
+            const spawnFriendly = Math.random() < 0.2; // 20% chance for friendly mole
+            const availableType = availableMoles.filter(mole => mole.isFriendly === spawnFriendly);
+            
+            if (availableType.length > 0) {
+              const mole = Phaser.Utils.Array.GetRandom(availableType);
+              mole.setVisible(true);
+              mole.y = mole.hideY;
+              
+              this.tweens.add({
+                targets: mole,
+                y: mole.showY,
+                duration: 200,
+                ease: 'Back.easeOut',
+                onComplete: () => {
+                  this.time.delayedCall(800, () => {
+                    if (mole.visible) {
+                      this.hideMole(mole);
+                    }
+                  });
+                }
+              });
+            }
           }
         }
 
@@ -150,21 +203,31 @@ const WhackAMoleGame = () => {
 
         hitMole(mole) {
           if (mole.visible) {
-            this.score += 1;
-            setScore(this.score);
-            setTotalClicks(prev => prev + 1);
+            if (mole.isFriendly) {
+              this.score = Math.max(0, this.score - 1);
+              this.cameras.main.shake(200, 0.005);
+            } else {
+              this.score += 1;
+            }
 
-            // Calculate total time
+            setTotalClicks(prev => prev + 1);
             const currentTime = Date.now();
             setTotalTime(prev => prev + (currentTime - this.startTime));
-            setStartTime(currentTime);  // Update React state for start time
+            setStartTime(currentTime);
 
             this.hideMole(mole);
-            if (this.score >= 8) {
-              setIsGameFinished(true); // End the game when score reaches 8
+            
+            if (this.score >= (Math.random() * (25 - 10) + 10)) {
+              setIsGameFinished(true);
             }
           }
         }
+        destroy() {
+            if (this.mallet) {
+              this.mallet.destroy();
+            }
+            super.destroy();
+          }
       }
 
       const config = {
@@ -177,26 +240,24 @@ const WhackAMoleGame = () => {
       };
 
       gameRef.current = new Phaser.Game(config);
-      console.log("Phaser game initialized successfully.");
     };
 
     initPhaser();
 
     return () => {
       if (gameRef.current) {
-        console.log("Destroying Phaser game...");
-        gameRef.current.destroy(true); // Destroy Phaser game instance when component unmounts
+        gameRef.current.destroy(true);
       }
+      gameInitializedRef.current = false;
     };
-  }, []); // No dependencies, so this will only run once on mount
+  }, []);
 
   const handleSubmit = async () => {
     try {
-      const timePerClick = totalClicks > 0 ? totalTime / totalClicks : 0; // Calculate average time per click
-
+      const timePerClick = totalClicks > 0 ? totalTime / totalClicks : 0;
       const response = await axios.post('/api/validate-captcha', {
-        score,
-        time: timePerClick,  // Time per click
+        score: gameRef.current?.scene?.scenes[0]?.score || 0, // Access internal score
+        time: timePerClick,
         mouseMovements,
       });
 
@@ -206,18 +267,38 @@ const WhackAMoleGame = () => {
         alert("CAPTCHA échoué, réessayez.");
       }
     } catch (error) {
+      console.error('Error validating CAPTCHA:', error);
       alert("Erreur lors de la validation du CAPTCHA.");
     }
   };
 
   return (
     <div>
-      <div id="game-container" style={{ position: 'relative', width: '400px', height: '400px' }}></div>
+      <div 
+        id="game-container" 
+        style={{ 
+          position: 'relative', 
+          width: '400px', 
+          height: '400px',
+          cursor: 'none' // Add this line
+        }}
+      ></div>
       {isGameFinished && (
-        <button onClick={handleSubmit}>Valider CAPTCHA</button>
+        <button 
+          onClick={handleSubmit}
+          style={{
+            marginTop: '10px',
+            padding: '8px 16px',
+            fontSize: '16px',
+            cursor: 'pointer'
+          }}
+        >
+          Valider CAPTCHA
+        </button>
       )}
     </div>
   );
+  
 };
 
 export default WhackAMoleGame;
