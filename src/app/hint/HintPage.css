@@ -2,6 +2,7 @@
     position: relative;
     height: 700px;
 }
+
 .split {
     height: 100%;
     width: 50%;
@@ -10,6 +11,8 @@
     top: 0;
     overflow-x: hidden;
     padding-top: 20px;
+    display: flex;
+    justify-content: center;
 }
 
 /* Control the left side */

@@ -2,7 +2,7 @@
 .hotButtonContainer {
     position: absolute;
     top: 100%; /* Aligne le conteneur verticalement */
-    right: 90%; /* Décalé de 20px du bord droit */
+    right: 45%; /* Décalé de 20px du bord droit */
     transform: translateY(-50%); /* Centrage vertical précis */
     display: flex;
     flex-direction: column; /* Aligne les éléments verticalement */
