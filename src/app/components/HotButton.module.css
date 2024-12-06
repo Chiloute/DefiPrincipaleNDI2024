@@ -1,8 +1,8 @@
 /* Conteneur principal */
-.hot-button-container {
-    position: fixed;
+.hotButtonContainer {
+    position: absolute;
     top: 50%; /* Aligne le conteneur verticalement */
-    right: 20px; /* Décalé de 20px du bord droit */
+    right: 50%; /* Décalé de 20px du bord droit */
     transform: translateY(-50%); /* Centrage vertical précis */
     display: flex;
     flex-direction: column; /* Aligne les éléments verticalement */
@@ -16,7 +16,7 @@
 }
 
 /* Boutons */
-.hot-button {
+.hotButton {
     background-color: lightcoral;
     color: white;
     font-size: 20px;
@@ -29,12 +29,12 @@
     transition: background-color 0.3s ease;
 }
 
-.hot-button:hover {
+.hotButton:hover {
     background-color: crimson; /* Changement de couleur au survol */
 }
 
 /* Température */
-.hot-temperature {
+.hotTemperature {
     font-size: 24px;
     font-weight: bold;
     margin: 10px 0;

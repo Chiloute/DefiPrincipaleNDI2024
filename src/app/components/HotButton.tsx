@@ -1,23 +1,23 @@
 'use client';
 
 import React, { useState } from 'react';
-import './HotButton.module.css'; // Assurez-vous d'avoir ce fichier dans le bon chemin.
+import styles from './HotButton.module.css'; // Import des styles CSS modules
 
 const HotButton: React.FC = () => {
     const [temperature, setTemperature] = useState<number>(37);
 
-    const increaseTemperature = () => setTemperature(temperature + 1);
-    const decreaseTemperature = () => setTemperature(temperature - 1);
+    const increaseTemperature = () => setTemperature((prev) => prev + 1);
+    const decreaseTemperature = () => setTemperature((prev) => prev - 1);
 
     return (
-        <div className="hot-button-overlay">
-            <button className="hot-button" onClick={increaseTemperature}>
+        <div className={styles.hotButtonContainer}>
+            <button className={styles.hotButton} onClick={increaseTemperature}>
                 +
             </button>
-            <div className="hot-temperature">
+            <div className={styles.hotTemperature}>
                 {temperature}°C
             </div>
-            <button className="hot-button" onClick={decreaseTemperature}>
+            <button className={styles.hotButton} onClick={decreaseTemperature}>
                 -
             </button>
         </div>

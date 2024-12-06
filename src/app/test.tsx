@@ -4,8 +4,6 @@ import Banner from './components/Banner';
 import ContentSection from './components/ContentSection';
 import Footer from './components/Footer';
 import HintItem from './hint/HintItem';
-import HotButton from "@/app/components/HotButton";
-import {cookies} from "next/headers";
 import RadarChart from './components/RadarChart';
 
 const Page = () => {
@@ -20,8 +18,6 @@ const Page = () => {
       {/* Contenu principal sur l'océan et le corps humain */}
       <ContentSection />
 
-        <HotButton />
-
       {/* Section des Hints */}
       <div style={{ marginTop: '2rem', padding: '1rem' }}>
         <HintItem
@@ -32,9 +28,10 @@ const Page = () => {
         <HintItem
           position={4}
           title="Body"
-          content="Click on the body to access additional options."
+          content="fuck."
         />
       </div>
+
       <RadarChart />
 
       <Footer />
