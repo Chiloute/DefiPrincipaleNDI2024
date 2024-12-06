@@ -10,15 +10,18 @@ const eau: React.FC = () => {
         <div className={styles.card}>
           <h2>Humain</h2>
           <p>
-            Le corps humain est composé à 60% d'eau et possède des systèmes complexes de régulation et d'équilibre.
+            La circulation sanguine est un réseau complexe qui transporte le sang, l'oxygène et les nutriments à travers le corps humain. Le sang traverse des artères, des veines et des capillaires, permettant à chaque organe de recevoir ce dont il a besoin pour fonctionner. Le cœur agit comme une pompe, maintenant une pression constante pour faire circuler le sang. Un bon fonctionnement de ce système est vital pour la survie, et toute perturbation, comme l'hypertension ou les maladies cardiovasculaires, peut avoir des conséquences graves.
           </p>
         </div>
         <div className={styles.card}>
           <h2>Océan</h2>
           <p>
-            Les océans couvrent 71% de la Terre, régulent le climat et sont une source essentielle de biodiversité.
+            Les courants marins, à la fois en surface et en profondeur, transportent la chaleur et les nutriments autour de la planète, influençant les climats locaux et mondiaux. Par exemple, le Gulf Stream transporte de l'eau chaude de la région des Caraïbes vers l'Europe, contribuant à un climat plus doux dans cette région. Ces courants sont également cruciaux pour la distribution des espèces marines et la santé des écosystèmes sous-marins.
           </p>
         </div>
+      </div>
+      <div className={styles.buttonContainer}>
+        <a href="/" className={styles.backButton}>Retour à l'accueil</a>
       </div>
     </div>
   );

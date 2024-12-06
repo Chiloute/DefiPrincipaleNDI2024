@@ -10,15 +10,18 @@ const eau: React.FC = () => {
         <div className={styles.card}>
           <h2>Humain</h2>
           <p>
-            Le corps humain est composé à 60% d'eau et possède des systèmes complexes de régulation et d'équilibre.
+             Le corps humain est vulnérable à une multitude de maladies, allant des infections bactériennes et virales aux maladies chroniques comme le cancer et les troubles cardiovasculaires. Les facteurs environnementaux, génétiques et comportementaux influencent cette vulnérabilité. Par exemple, le stress et une mauvaise alimentation peuvent affaiblir le système immunitaire, rendant le corps plus susceptible aux maladies.
           </p>
         </div>
         <div className={styles.card}>
           <h2>Océan</h2>
           <p>
-            Les océans couvrent 71% de la Terre, régulent le climat et sont une source essentielle de biodiversité.
+            Les océans sont particulièrement vulnérables à la pollution, notamment les plastiques et les produits chimiques qui affectent non seulement les écosystèmes marins, mais aussi la chaîne alimentaire humaine. La montée des températures océaniques et les événements climatiques extrêmes, comme les tempêtes et les vagues de chaleur marines, rendent aussi les océans plus vulnérables. Cette vulnérabilité requiert des actions mondiales pour réduire l'empreinte humaine.
           </p>
         </div>
+      </div>
+      <div className={styles.buttonContainer}>
+        <a href="/" className={styles.backButton}>Retour à l'accueil</a>
       </div>
     </div>
   );
