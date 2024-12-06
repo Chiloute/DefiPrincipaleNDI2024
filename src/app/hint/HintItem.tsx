@@ -4,22 +4,30 @@ import React from 'react';
 import './HintItem.css';
 
 interface HintProps {
-  position: number; // La position (par ex., 1, 4, etc.)
+  x: number; // La position (par ex., 1, 4, etc.)
+  y: number; // La position (par ex., 1, 4, etc.)
+  intensity?: number; // l'intensité (1:3)
   title?: string;    // Le contenu du point
   content: string;  // Le texte de l'aide
 }
 
-const HintItem: React.FC<HintProps> = ({ position, title="", content }) => {
+const HintItem: React.FC<HintProps> = ({ x, y, intensity=1, title="", content }) => {
+  var color = "";
+  switch (intensity) {
+    case 2:
+      color = "orange";
+      break;
+    case 3:
+      color = "red";
+      break;
+    default:
+      color = "green";
+      break;
+  }
   return (
-    <div className="item-hints">
-      <div className="hint" data-position={position}>
-        <span className="hint-radius"></span>
-        <span className="hint-dot">{title}</span>
-        <div className="hint-content do--split-children">
-          <p>{content}</p>
-        </div>
-      </div>
-    </div>
+    <button className='labels' style={{ position: 'absolute', left: x, top: y, '--bg-color': color}}>
+      {content}
+    </button>
   );
 };
 

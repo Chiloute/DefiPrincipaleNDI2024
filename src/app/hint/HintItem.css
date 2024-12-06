@@ -1,93 +1,40 @@
-.item-hints {
-  --purple: red;
+.labels {
+  align-items: center;
+  background-color: transparent;
+  color: transparent;
   cursor: pointer;
   display: flex;
-  justify-content: flex-start;
-  padding-right: 0px;
+  font-family: ui-sans-serif,system-ui,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.5;
+  text-decoration: none;
+  text-transform: uppercase;
+  outline: 0;
+  border: 0;
+  padding: 1rem;
+  transition: all .42s cubic-bezier(.25,.8,.25,1);
 }
-.item-hints .hint {
-  margin: 150px auto;
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+
+.labels:hover {
+  color: #000;
+  font-size: 1rem;
 }
-.item-hints .hint-dot {
-  z-index: 3;
-  border: 1px solid var(--purple);
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  transform: translate(-0%, -0%) scale(0.95);
-  margin: auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--purple);
-}
-.item-hints .hint-radius {
-  background-color: rgba(255, 255, 255, 0.1);
-  border-radius: 50%;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin: -125px 0 0 -125px;
-  opacity: 0;
-  visibility: hidden;
-  transform: scale(0);
-}
-.item-hints .hint[data-position="1"] .hint-content {
-  top: 85px;
-  left: 50%;
-  margin-left: 56px;
-}
-.item-hints .hint-content {
-  width: 300px;
-  position: absolute;
-  z-index: 5;
-  padding: 35px 0;
-  opacity: 0;
-  transition: opacity 0.7s ease, visibility 0.7s ease;
-  color: var(--purple);
-  visibility: hidden;
-  pointer-events: none;
-}
-.item-hints .hint:hover .hint-content {
-  opacity: 1;
-  visibility: visible;
-}
-.item-hints .hint-content::before {
-  width: 0px;
-  bottom: 0;
-  left: 0;
+
+.labels:before {
+  background-color: var(--bg-color);
   content: "";
-  background-color: var(--purple);
+  display: inline-block;
+  height: 10px;
+  width: 10px;
+  margin-right: 10px;
+  transition: all .42s cubic-bezier(.25,.8,.25,1);
+  border-radius: 50%;
+}
+
+.labels:hover:before {
+  background-color: var(--bg-color);
+  border-radius: 0;
+  width: 3rem;
   height: 1px;
-  position: absolute;
-  transition: width 0.4s;
-}
-.item-hints .hint:hover .hint-content::before {
-  width: 200px;
-}
-.item-hints .hint-content::after {
-  transform-origin: 0 50%;
-  transform: rotate(-225deg);
-  bottom: 0;
-  left: 0;
-  width: 70px;
-  content: "";
-  background-color: var(--purple);
-  height: 1px;
-  position: absolute;
-  opacity: 1;
-  transition: opacity 0.5s ease;
-}
-.item-hints .hint:hover .hint-content::after {
-  opacity: 1;
-  visibility: visible;
-}
-.item-hints .hint[data-position="4"] .hint-content {
-  bottom: 85px;
-  left: 50%;
-  margin-left: 56px;
 }
