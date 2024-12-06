@@ -39,6 +39,7 @@ const WhackAMoleGame = () => {
           this.load.image('mole', '/mole.png');
           this.load.image('friendly-mole', '/mole-headband.png');
           this.load.image('mallet', '/mallet.png');
+          this.load.image('mallet-hit', '/mallet-hit.png');
         }
 
         create() {
@@ -99,46 +100,71 @@ const WhackAMoleGame = () => {
             callbackScope: this,
             loop: true
           });
-          
+
             // Hide the default cursor
             this.input.setDefaultCursor('none');
-          
-            // Create the mallet cursor
+
+            // Create both mallet sprites but only show the regular one
             this.mallet = this.add.image(0, 0, 'mallet')
-              .setOrigin(1, 1) // Keep bottom-right as rotation origin
-              .setDepth(1000)
-              .setScale(0.5);
-          
-            // Get mallet dimensions for offset calculation
+            .setOrigin(1, 1)
+            .setDepth(1000)
+            .setScale(0.5);
+
+            this.malletHit = this.add.image(0, 0, 'mallet-hit')
+            .setOrigin(1, 1)
+            .setDepth(1000)
+            .setScale(0.5)
+            .setVisible(false);
+
+            // Get mallet dimensions for offset
             const malletWidth = this.mallet.displayWidth;
             const malletHeight = this.mallet.displayHeight;
-          
-            // Update mallet position on pointer move with offset
+
+            // Update both mallets position
             this.input.on('pointermove', (pointer) => {
-              // Add offset to position the cursor at center-left of the mallet
-              this.mallet.x = pointer.x + malletWidth;
-              this.mallet.y = pointer.y + malletHeight/4;
+            this.mallet.x = pointer.x + malletWidth;
+            this.mallet.y = pointer.y + malletHeight/2;
+            this.malletHit.x = pointer.x + malletWidth;
+            this.malletHit.y = pointer.y + malletHeight/2;
             });
-          
-            // Add click animation
-            this.input.on('pointerdown', () => {
-              this.tweens.add({
-                targets: this.mallet,
-                angle: -45,
-                duration: 100,
-                ease: 'Back.easeOut',
-                yoyo: true
-              });
+
+            // Add click animation with hit effect
+            this.input.on('pointerdown', (pointer) => {
+            const hitMole = this.checkMoleHit(pointer);
+
+            this.tweens.add({
+            targets: [this.mallet, this.malletHit],
+            angle: -45,
+            duration: 100,
+            ease: 'Back.easeOut',
+            yoyo: true,
+            onUpdate: (tween) => {
+                // Show hit variation at the end of the swing (around 90% of the animation)
+                if (hitMole && tween.progress > 0.9 && tween.progress < 0.95) {
+                this.mallet.setVisible(false);
+                this.malletHit.setVisible(true);
+                }
+            },
+            onComplete: () => {
+                // Reset to normal mallet
+                this.mallet.setVisible(true);
+                this.malletHit.setVisible(false);
+            }
             });
-          
+            });
+
             // Reset mallet rotation on pointer up
             this.input.on('pointerup', () => {
-              this.tweens.add({
-                targets: this.mallet,
-                angle: 0,
-                duration: 100,
-                ease: 'Back.easeOut'
-              });
+            this.tweens.add({
+            targets: [this.mallet, this.malletHit],
+            angle: 0,
+            duration: 100,
+            ease: 'Back.easeOut',
+            onComplete: () => {
+                this.mallet.setVisible(true);
+                this.malletHit.setVisible(false);
+            }
+            });
             });
         }
 
@@ -201,31 +227,69 @@ const WhackAMoleGame = () => {
           });
         }
 
+        // Add this helper function to check if we're hitting a mole
+        checkMoleHit(pointer) {
+            const x = pointer.x;
+            const y = pointer.y;
+            
+            return this.moles.some(mole => 
+            mole.visible && 
+            Phaser.Math.Distance.Between(x, y, mole.x, mole.y) < 50 // Adjust hit radius as needed
+            );
+        }
+
+        // Modify your hitMole function to work with the new effect
         hitMole(mole) {
-          if (mole.visible) {
+            if (mole.visible) {
             if (mole.isFriendly) {
-              this.score = Math.max(0, this.score - 1);
-              this.cameras.main.shake(200, 0.005);
+                this.score = Math.max(0, this.score - 1);
+                this.cameras.main.shake(200, 0.005);
             } else {
-              this.score += 1;
+                this.score += 1;
+                // Add shake effect
+                this.tweens.add({
+                targets: mole,
+                x: mole.x + 3,
+                duration: 50,
+                yoyo: true,
+                repeat: 2,
+                ease: 'Sine.easeInOut',
+                onComplete: () => {
+                    mole.x = mole.originalX;
+                }
+                });
             }
+
+            // Hide mole with animation
+            this.tweens.add({
+                targets: mole,
+                y: mole.hideY,
+                duration: 100,
+                ease: 'Back.easeIn',
+                onComplete: () => {
+                mole.setVisible(false);
+                }
+            });
 
             setTotalClicks(prev => prev + 1);
             const currentTime = Date.now();
             setTotalTime(prev => prev + (currentTime - this.startTime));
             setStartTime(currentTime);
 
-            this.hideMole(mole);
-            
-            if (this.score >= (Math.random() * (25 - 10) + 10)) {
-              setIsGameFinished(true);
+            if (this.score >= 8) {
+                setIsGameFinished(true);
             }
-          }
+            }
         }
+
+
         destroy() {
             if (this.mallet) {
               this.mallet.destroy();
             }
+            if (this.malletHit) {
+                this.malletHit.destroy();
+              }
             super.destroy();
           }
       }
@@ -280,7 +344,7 @@ const WhackAMoleGame = () => {
           position: 'relative', 
           width: '400px', 
           height: '400px',
-          cursor: 'none' // Add this line
+          cursor: 'none'
         }}
       ></div>
       {isGameFinished && (
