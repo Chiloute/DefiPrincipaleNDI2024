@@ -9,7 +9,7 @@ const Footer = () => {
 
         <nav className={styles.nav}>
           <ul>
-            <li><a href="/contact">Contact</a></li>
+            <li><a href="https://www.nuitdelinfo.com/inscription/equipes/243" target={"_blank"}>Contact</a></li>
           </ul>
           <br></br>
         </nav>

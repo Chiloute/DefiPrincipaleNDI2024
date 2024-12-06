@@ -7,12 +7,10 @@ const Header = () => {
   return (
     <header className={styles.header}>
       <div className={styles.logo}>
-        <h1>RACE FOR WATER</h1>
-        <span>A FOUNDATION TO PRESERVE WATER</span>
+          <h1> <a href={"https://www.raceforwater.org/fr/"} target={"_blank"}> RACE FOR WATER</a> </h1>
+        <span><a href={"https://www.raceforwater.org/fr/"} target={"_blank"}>A FOUNDATION TO PRESERVE WATER </a></span>
       </div>
       <div className={styles.nav}>
-        <button className={styles.supportButton}>Menu</button>
-        <button className={styles.menuButton}>Made by "Vive le café"</button>
       </div>
     </header>
   );
