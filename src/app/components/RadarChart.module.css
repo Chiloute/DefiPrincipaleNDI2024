@@ -1,0 +1,81 @@
+/* Section principale */
+.content {
+  padding: 2rem;
+  text-align: center;
+  color: #00142b;
+  background-color: #f5f5f7;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Conteneur des similarités */
+.comparisonContainer {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: auto;
+  background-color: #ffffff;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Liste des comparaisons */
+.comparisonList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+/* Carte individuelle */
+.comparisonItem {
+  flex: 1 1 calc(45% - 2rem); /* Deux cartes par ligne avec un espacement de 2rem */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+  border: 1px solid #e3e3e3;
+  border-radius: 15px;
+  background: linear-gradient(145deg, #f3f3f3, #ffffff);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.comparisonItem:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Titre et contenu des cartes */
+.comparisonItem h3 {
+  font-size: 1.2rem;
+  color: #00142b;
+  margin-bottom: 1rem;
+}
+
+.comparisonItem p {
+  font-size: 1rem;
+  color: #444;
+  line-height: 1.6;
+}
+
+/* VS au centre */
+.vs {
+  margin: 1rem 0;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #f44336;
+  text-transform: uppercase;
+}
+
+/* Responsivité */
+@media (max-width: 768px) {
+  .comparisonItem {
+    flex: 1 1 100%; /* Une carte par ligne sur petits écrans */
+  }
+
+  .vs {
+    margin: 0.5rem 0;
+    font-size: 1.2rem;
+  }
+}
