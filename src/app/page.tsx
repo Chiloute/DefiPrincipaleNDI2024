@@ -4,12 +4,24 @@ import Banner from './components/Banner';
 import ContentSection from './components/ContentSection';
 import Footer from './components/Footer';
 import HintPage from './hint/page';
-import HintItem from './hint/HintItem';
 import HotButton from "@/app/components/HotButton";
-import {cookies} from "next/headers";
 import RadarChart from './components/RadarChart';
+import { create } from 'zustand';
+
+export interface StoreState {
+  temperature: number; // L'état
+  increase: () => void; // Une action
+  decrease: () => void; // Une autre action
+}
+
+export const useStore = create(set => ({
+    temperature: 0,
+    increment: () => set((state:StoreState) => ({ temperature: state.temperature + 1 })),
+    decrement: () => set((state:StoreState) => ({ temperature: state.temperature - 1 })),
+}));
 
 const Page = () => {
+  
   return (
     <div>
       {/* Header avec le logo et menu */}

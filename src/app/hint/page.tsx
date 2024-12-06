@@ -2,8 +2,11 @@ import React from 'react';
 import HintItem from './HintItem';
 import './HintPage.css';
 import Image from 'next/image'
+import { useStore } from '../page';
 
 const HintPage = () => {
+  
+  const temperature = useStore((state) => state.temperature);
   return (
     <div className='HintTable'>
         <div className='left split'>
@@ -12,7 +15,7 @@ const HintPage = () => {
           <HintItem
             x={10}
             y={10}
-            content="C la mort."
+            content=""
           />
         </div>
         <div className='right split'>

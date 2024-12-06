@@ -1,16 +1,21 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import styles from './HotButton.module.css'; // Import des styles CSS modules
+import useTempContext from '../page';
+import { useStore } from '../page';
+
 
 const minval = 0;
 const maxval = 4;
 
 const HotButton: React.FC = () => {
-    const [temperature, setTemperature] = useState<number>(0);
 
-    const increaseTemperature = async ()  => {if (temperature < maxval) setTemperature((prev) => prev + 1);};
-    const decreaseTemperature = async () => {if (temperature > minval) setTemperature((prev) => prev - 1);};
+    const temperature = useStore((state) => state.temperature);
+    const increment = useStore(state => state.increment);
+    const decrement = useStore(state => state.decrement);
+    const increaseTemperature = async ()  => {if (temperature < maxval) increment();};
+    const decreaseTemperature = async () => {if (temperature > minval) decrement();};
 
     return (
         <div className={styles.hotButtonContainer}>
