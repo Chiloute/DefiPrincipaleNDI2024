@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from './eau.module.css';
+import Link from 'next/link';
 
 const eau: React.FC = () => {
   return (
@@ -16,12 +17,12 @@ const eau: React.FC = () => {
         <div className={styles.card}>
           <h2>Océan</h2>
           <p>
-            Les océans sont particulièrement vulnérables à la pollution, notamment les plastiques et les produits chimiques qui affectent non seulement les écosystèmes marins, mais aussi la chaîne alimentaire humaine. La montée des températures océaniques et les événements climatiques extrêmes, comme les tempêtes et les vagues de chaleur marines, rendent aussi les océans plus vulnérables. Cette vulnérabilité requiert des actions mondiales pour réduire l'empreinte humaine.
+            Les océans sont particulièrement vulnérables à la pollution, notamment les plastiques et les produits chimiques qui affectent non seulement les écosystèmes marins, mais aussi la chaîne alimentaire humaine. La montée des températures océaniques et les événements climatiques extrêmes, comme les tempêtes et les vagues de chaleur marines, rendent aussi les océans plus vulnérables. Cette vulnérabilité requiert des actions mondiales pour réduire l&apos;empreinte humaine.
           </p>
         </div>
       </div>
       <div className={styles.buttonContainer}>
-        <a href="/" className={styles.backButton}>Retour à l'accueil</a>
+        <Link href="/" className={styles.backButton}>Retour à l&apos;accueil</Link>
       </div>
     </div>
   );

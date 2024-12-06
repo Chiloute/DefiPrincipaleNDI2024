@@ -1,20 +1,25 @@
 'use client'; // Nécessaire si des interactions sont prévues
-
-import React, { useState } from 'react';
+import React from 'react';
 import './HintItem.css';
-import { useStore } from '../page';
+import { useStore } from '../../store/temperature';
 
 interface HintProps {
   x: number; // La position (par ex., 1, 4, etc.)
   y: number; // La position (par ex., 1, 4, etc.)
   generation: number; 
   intensity?: number; // l'intensité (1:3)
-  title?: string;    // Le contenu du point
   content: string;  // Le texte de l'aide
 }
 
-const HintItem: React.FC<HintProps> = ({ x, y, generation, intensity=1, title="", content }) => {
-  var color = "";
+declare module 'react' {
+  interface CSSProperties {
+    '--bg-color'?: string;  // Ajoutez ici toutes les variables CSS que vous utilisez
+  }
+}
+
+const HintItem: React.FC<HintProps> = ({ x, y, generation, intensity=1, content }) => {
+  
+  let color = "";
   switch (intensity) {
     case 2:
       color = "orange";
@@ -30,7 +35,7 @@ const HintItem: React.FC<HintProps> = ({ x, y, generation, intensity=1, title=""
 
   if (generation == temperature)
     return (
-      <button className='labels' style={{ position: 'absolute', left: `${x}%`, top: `${y}%`, '--bg-color': color}}>
+      <button className='labels' style={{ position: 'absolute', left: `${x}%`, top: `${y}%`, "--bg-color": color}}>
         {content}
       </button>
     );

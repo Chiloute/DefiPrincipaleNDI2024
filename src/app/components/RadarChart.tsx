@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from './RadarChart.module.css';
+import Link from 'next/link';
 
 const similarities = [
   { label: "Proportions d'eau", ocean: "71% d'eau", body: "60% d'eau", target: "/eau" },
@@ -19,7 +20,7 @@ const ContentSection = () => {
         <h2>Similarités entre les Océans et le Corps Humain</h2>
         <div className={styles.comparisonList}>
           {similarities.map((item, index) => (
-            <a key={index} href={item.target} className={styles.comparisonItem}>
+            <Link key={index} href={item.target} className={styles.comparisonItem}>
               <div>
                 <h3>Océan</h3>
                 <p>{item.ocean}</p>
@@ -29,7 +30,7 @@ const ContentSection = () => {
                 <h3>Corps Humain</h3>
                 <p>{item.body}</p>
               </div>
-            </a>
+            </Link>
           ))}
         </div>
       </div>
