@@ -337,7 +337,30 @@ const WhackAMoleGame = () => {
   };
 
   return (
-    <div>
+    <div style={{
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'flex-start', // Don't center vertically, keep top alignment
+      height: '100vh',  // To make sure the content is in view
+      textAlign: 'center',
+      paddingTop: '20px',
+    }}>
+      <div 
+        style={{
+          backgroundColor: '#f9f9f9',
+          padding: '10px 20px',
+          borderRadius: '8px',
+          border: '1px solid #ddd',
+          marginBottom: '20px',
+          fontSize: '18px',
+          fontWeight: 'bold',
+          maxWidth: '400px',
+        }}
+      >
+        🎯 Objectif : Tapez les taupes sans bandana pour marquer des points !
+      </div>
+      
       <div 
         id="game-container" 
         style={{ 
@@ -347,14 +370,29 @@ const WhackAMoleGame = () => {
           cursor: 'none'
         }}
       ></div>
+      
       {isGameFinished && (
         <button 
           onClick={handleSubmit}
           style={{
-            marginTop: '10px',
-            padding: '8px 16px',
-            fontSize: '16px',
-            cursor: 'pointer'
+            marginTop: '20px',
+            padding: '12px 24px',
+            fontSize: '18px',
+            cursor: 'pointer',
+            backgroundColor: '#4285F4',
+            color: 'white',
+            border: 'none',
+            borderRadius: '8px',
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.2)',
+            transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+          }}
+          onMouseEnter={(e) => {
+            e.target.style.transform = 'scale(1.05)';
+            e.target.style.boxShadow = '0 6px 10px rgba(0, 0, 0, 0.3)';
+          }}
+          onMouseLeave={(e) => {
+            e.target.style.transform = 'scale(1)';
+            e.target.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.2)';
           }}
         >
           Valider CAPTCHA
@@ -362,7 +400,6 @@ const WhackAMoleGame = () => {
       )}
     </div>
   );
-  
 };
 
 export default WhackAMoleGame;
