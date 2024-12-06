@@ -3,11 +3,14 @@
 import React, { useState } from 'react';
 import styles from './HotButton.module.css'; // Import des styles CSS modules
 
-const HotButton: React.FC = () => {
-    const [temperature, setTemperature] = useState<number>(37);
+const minval = 0;
+const maxval = 4;
 
-    const increaseTemperature = () => setTemperature((prev) => prev + 1);
-    const decreaseTemperature = () => setTemperature((prev) => prev - 1);
+const HotButton: React.FC = () => {
+    const [temperature, setTemperature] = useState<number>(0);
+
+    const increaseTemperature = async ()  => {if (temperature < maxval) setTemperature((prev) => prev + 1);};
+    const decreaseTemperature = async () => {if (temperature > minval) setTemperature((prev) => prev - 1);};
 
     return (
         <div className={styles.hotButtonContainer}>

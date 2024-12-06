@@ -1,6 +1,6 @@
 'use client'; // Nécessaire si des interactions sont prévues
 
-import React from 'react';
+import React, { useState } from 'react';
 import './HintItem.css';
 
 interface HintProps {
