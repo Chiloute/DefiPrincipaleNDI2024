@@ -1,18 +1,17 @@
+// src/components/WhackAMole.js
 'use client';
-import { useEffect, useRef } from 'react';
 import dynamic from 'next/dynamic';
 
-// Create a wrapper component that will load Phaser dynamically
-const WhackAMoleGame = dynamic(() => {
-  return import('./WhackAMoleGame');
-}, {
-  ssr: false // This ensures the component only loads on the client side
+const WhackAMoleGame = dynamic(() => import('./WhackAMoleGame'), {
+  ssr: false
 });
 
-export default function WhackAMole() {
+const WhackAMole = ({ onGameComplete }) => {
   return (
     <div className="inline-block">
-      <WhackAMoleGame />
+      <WhackAMoleGame onGameComplete={onGameComplete} />
     </div>
   );
-}
+};
+
+export default WhackAMole;

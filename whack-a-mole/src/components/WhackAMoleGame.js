@@ -1,12 +1,10 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
-import axios from 'axios';
 
-const WhackAMoleGame = () => {
+const WhackAMoleGame = ({ onGameComplete }) => {
   const [totalTime, setTotalTime] = useState(0);
   const [totalClicks, setTotalClicks] = useState(0);
   const [mouseMovements, setMouseMovements] = useState([]);
-  const [isGameFinished, setIsGameFinished] = useState(false);
   const [startTime, setStartTime] = useState(null);
   const gameRef = useRef(null);
   const gameInitializedRef = useRef(false);
@@ -238,49 +236,33 @@ const WhackAMoleGame = () => {
             );
         }
 
-        // Modify your hitMole function to work with the new effect
         hitMole(mole) {
             if (mole.visible) {
-            if (mole.isFriendly) {
+              if (mole.isFriendly) {
                 this.score = Math.max(0, this.score - 1);
                 this.cameras.main.shake(200, 0.005);
-            } else {
+              } else {
                 this.score += 1;
-                // Add shake effect
                 this.tweens.add({
-                targets: mole,
-                x: mole.x + 3,
-                duration: 50,
-                yoyo: true,
-                repeat: 2,
-                ease: 'Sine.easeInOut',
-                onComplete: () => {
+                  targets: mole,
+                  x: mole.x + 3,
+                  duration: 50,
+                  yoyo: true,
+                  repeat: 2,
+                  ease: 'Sine.easeInOut',
+                  onComplete: () => {
                     mole.x = mole.originalX;
-                }
+                  }
                 });
+              }
+  
+              this.hideMole(mole);
+  
+              if (this.score >= 8) {
+                onGameComplete?.(true);
+              }
             }
-
-            // Hide mole with animation
-            this.tweens.add({
-                targets: mole,
-                y: mole.hideY,
-                duration: 100,
-                ease: 'Back.easeIn',
-                onComplete: () => {
-                mole.setVisible(false);
-                }
-            });
-
-            setTotalClicks(prev => prev + 1);
-            const currentTime = Date.now();
-            setTotalTime(prev => prev + (currentTime - this.startTime));
-            setStartTime(currentTime);
-
-            if (this.score >= 8) {
-                setIsGameFinished(true);
-            }
-            }
-        }
+          }
 
 
         destroy() {
@@ -314,7 +296,7 @@ const WhackAMoleGame = () => {
       }
       gameInitializedRef.current = false;
     };
-  }, []);
+  }, [onGameComplete]); // Add onGameComplete to dependencies
 
   const handleSubmit = async () => {
     try {
@@ -337,30 +319,15 @@ const WhackAMoleGame = () => {
   };
 
   return (
-    <div>
-      <div 
-        id="game-container" 
-        style={{ 
-          position: 'relative', 
-          width: '400px', 
-          height: '400px',
-          cursor: 'none'
-        }}
-      ></div>
-      {isGameFinished && (
-        <button 
-          onClick={handleSubmit}
-          style={{
-            marginTop: '10px',
-            padding: '8px 16px',
-            fontSize: '16px',
-            cursor: 'pointer'
-          }}
-        >
-          Valider CAPTCHA
-        </button>
-      )}
-    </div>
+    <div 
+      id="game-container" 
+      style={{ 
+        position: 'relative', 
+        width: '400px', 
+        height: '400px',
+        cursor: 'none'
+      }}
+    />
   );
   
 };
