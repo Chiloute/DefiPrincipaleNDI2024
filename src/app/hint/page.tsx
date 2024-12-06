@@ -8,7 +8,6 @@ const HintPage = () => {
     <div className='HintTable'>
         <div className='left split'>
           <Image src="/terre.png" alt="une personne" width="400" height="400" />
-          <h1>Hints</h1>
           <HintItem
             x={10}
             y={10}
